@@ -1,0 +1,169 @@
+#!/usr/bin/python
+
+## Alex Holehouse
+## Pappulab
+## November 2013
+##
+## colgrab
+##
+## Extracts numbers from a defined column in a file. Allows you to set 
+##
+## A) Which column
+## B) How you define a comment line
+## C) What the separator between columns is
+##
+## Has a nice user interface
+
+
+def header_initial_char(line, header_array):
+    """ header_array is a list or string of characters
+        which define a file header - this function returns
+        true if a line represents a header line or false
+        if not
+    """
+    for i in header_array:
+        if line[0] == i:
+            return True
+
+    else:
+        return False
+    
+
+def get_number_of_colums(string):
+    """ Function which determines the number of whitespace seperated columns
+        in a string
+    """
+    
+    return(len(get_columns(string)))
+
+
+def get_columns(string, deliniator=" "):
+    """ Function which returns a list of strings corresponding
+        to the ordered columns in the input string.
+
+        i.e.
+
+        get_columns('A D C  9   2121 121')
+
+        Would return 
+
+        ['A', 'D', 'C', '9', '2121', '121']
+
+        newline characters are removed if found
+    """
+
+    # remove newline if found
+    strlen = len(string)
+    if string[strlen-1] == '\n':
+        string = string[0:strlen-1]
+
+    return filter(None, string.split(deliniator))                           
+    
+
+def get_val_x_value(x):
+    """ Function which extracts the string at column x """
+    pass
+
+def safe_convert_to_int(stringVal):
+    """ Function to safely convert a string to an int, throwing
+        an exception if the string is obviously not an integer
+    """
+    pass
+
+def safe_convert_to_double(stringVal):
+
+
+    # scientific notation
+    if not stringVal.find("e") == -1:
+        num = stringVal.split("e")
+        val = float(num[0])
+        exp = float(num[1])
+        return val*pow(10,exp)
+    else:
+        return float(stringVal)
+        
+
+
+
+
+## ===================================================================================================
+##                              Main Script - hold onto your hat!
+## ===================================================================================================
+
+if __name__=="__main__":
+    import argparse 
+    import sys
+    from numpy import std, mean
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--filename","-f", help="Name of the file to be processed") 
+    parser.add_argument("--ignore","-i", help="String of characters which define a line to be ignored [default='@#']") 
+    parser.add_argument("--separator", "-s", help="Determines what separates columns [default=' ']")
+    parser.add_argument("--column", "-c", help="Which column is are numbers being extracted from [default=2]")   
+
+    args = parser.parse_args()
+
+    if args.filename:
+        filename=args.filename
+    else:
+        print "[FATAL ERROR]: Please provide a filename (-f 'filename')"
+        exit(1)
+
+
+    if args.separator:
+        separator=args.separator
+    else:
+        separator=" "
+
+    if args.column:
+        try:
+            column=int(args.column)
+            if column < 1:
+                print '[FATAL ERROR]: Column must be equal to or greater than 1'
+                exit(1)
+            # offset so column indexing can start at 0 internally but 1 for the user
+            # interface (0th column makes no sense) 
+            column = column-1
+
+        except ValueError:
+            print '[FATAL ERROR]: Unable to convert ' + str(args.column) + " to an integer"
+            exit(1)
+    else:
+        # Note the second column is indexed at position 1, so "column=1" is really the second
+        # column (hence why default = 2)
+        column=1
+
+    if args.ignore:
+        ignore_string=args.ignore
+    else:
+        ignore_string="#@"
+
+    try:
+        with open(filename) as f:
+            content = f.readlines()
+    except IOError:
+        print '[FATAL ERROR]: File does not exist or could not be opened'
+
+    
+    values = []
+    for line in content:
+        if header_initial_char(line, ignore_string):
+            continue
+        elif line == "":
+            continue
+        else:
+            try:
+                values.append(safe_convert_to_double(get_columns(line, separator)[column]))
+            except IndexError:
+                print "[FATAL ERROR]: Input file lacks column " + str(1+column)
+                print "               File has only " + str(len(get_columns(line, separator))) + " columns"
+                exit(1)
+
+
+    # print the values you found
+    for i in values:
+        print i
+
+
+        
