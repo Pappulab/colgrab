@@ -12,7 +12,7 @@
 ## B) How you define a comment line
 ## C) What the separator between columns is
 ##
-## Has a nice user interface
+## Has a nice user interface 
 
 
 def header_initial_char(line, header_array):
