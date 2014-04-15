@@ -1,4 +1,5 @@
 colgrab
 =======
 
-Script which extracts a number of columns from a text file while ignoring headers. Basically awk for those who can't use awk.
+Script which extracts a single numerical columns from a text file while ignoring headers. Will convert numbers in scientific notation into
+floating point notation
