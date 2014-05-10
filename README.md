@@ -11,13 +11,13 @@ Say you want the energies
 Example - CAMPARI energy
 ------------------------
 
-   colgrab -f __ENERGY.dat
+    colgrab -f __ENERGY.dat
 
 will print each energy line to STDOUT.
 
 Example - GROMACS energy
 
-   colgrab -f energy.xvg
+    colgrab -f energy.xvg
 
 will print each energy line to STDOUT.
 
