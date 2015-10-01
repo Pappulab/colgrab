@@ -131,8 +131,6 @@ if __name__=="__main__":
 
     if args.separator:
         separator=args.separator
-        print str(separator)
-        print "A\tb"
     else:
         separator=" "
 
