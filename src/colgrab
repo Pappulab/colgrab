@@ -13,8 +13,13 @@
 ## C) What the separator between columns is
 ##
 ## Has a nice user interface 
+##
+## Version 1.1 (Oct 2015)
+##
+## Updated description to include how to pass tabs on a unix system 
 
-
+##################################################################
+#
 def header_initial_char(line, header_array):
     """ header_array is a list or string of characters
         which define a file header - this function returns
@@ -29,6 +34,8 @@ def header_initial_char(line, header_array):
         return False
     
 
+##################################################################
+#
 def get_number_of_colums(string):
     """ Function which determines the number of whitespace seperated columns
         in a string
@@ -37,6 +44,8 @@ def get_number_of_colums(string):
     return(len(get_columns(string)))
 
 
+##################################################################
+#
 def get_columns(string, deliniator=" "):
     """ Function which returns a list of strings corresponding
         to the ordered columns in the input string.
@@ -58,18 +67,26 @@ def get_columns(string, deliniator=" "):
         string = string[0:strlen-1]
 
     return filter(None, string.split(deliniator))                           
-    
-
+ 
+   
+##################################################################
+#
 def get_val_x_value(x):
     """ Function which extracts the string at column x """
     pass
 
+
+##################################################################
+#
 def safe_convert_to_int(stringVal):
     """ Function to safely convert a string to an int, throwing
         an exception if the string is obviously not an integer
     """
     pass
 
+
+##################################################################
+#
 def safe_convert_to_double(stringVal):
 
 
@@ -99,8 +116,9 @@ if __name__=="__main__":
 
     parser.add_argument("--filename","-f", help="Name of the file to be processed") 
     parser.add_argument("--ignore","-i", help="String of characters which define a line to be ignored [default='@#']") 
-    parser.add_argument("--separator", "-s", help="Determines what separates columns [default=' ']")
+    parser.add_argument("--separator", "-s", help="Determines what separates columns [default=' '] (NB tabs are passed as -s $'\\t')")
     parser.add_argument("--column", "-c", help="Which column is are numbers being extracted from [default=2]")   
+    parser.add_argument("--mean", "-m", help="Calculate mean and STDEV (NOTE YOU DATA MIGHT NOT BE GAUSSIAN!)", action="store_true")   
 
     args = parser.parse_args()
 
@@ -113,6 +131,8 @@ if __name__=="__main__":
 
     if args.separator:
         separator=args.separator
+        print str(separator)
+        print "A\tb"
     else:
         separator=" "
 
@@ -160,10 +180,18 @@ if __name__=="__main__":
                 print "               File has only " + str(len(get_columns(line, separator))) + " columns"
                 exit(1)
 
-
+                
     # print the values you found
-    for i in values:
-        print i
+
+    if args.mean:
+        total=0
+        for i in values:
+            total=total+i
+
+        print "Mean = " + str(total/len(values))
+    else:
+        for i in values:
+            print i
 
 
         
