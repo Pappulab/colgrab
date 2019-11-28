@@ -71,8 +71,7 @@ def get_columns(string, deliniator=" "):
     if string[strlen-1] == '\n':
         string = string[0:strlen-1]
 
-    return filter(None, string.split(deliniator))                           
- 
+    return list(filter(None, string.split(deliniator))) 
    
 ##################################################################
 #
