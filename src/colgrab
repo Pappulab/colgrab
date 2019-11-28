@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 ## Alex Holehouse
 ## Pappulab
@@ -16,7 +16,12 @@
 ##
 ## Version 1.1 (Oct 2015)
 ##
-## Updated description to include how to pass tabs on a unix system 
+## Updated description to include how to pass tabs on a unix system
+##
+## Version 1.2 (Nov 2019)
+##
+## Made Python 3 compatible
+
 
 ##################################################################
 #
@@ -125,7 +130,7 @@ if __name__=="__main__":
     if args.filename:
         filename=args.filename
     else:
-        print "[FATAL ERROR]: Please provide a filename (-f 'filename')"
+        print("[FATAL ERROR]: Please provide a filename (-f 'filename')")
         exit(1)
 
 
@@ -138,19 +143,19 @@ if __name__=="__main__":
         try:
             column=int(args.column)
             if column < 1:
-                print '[FATAL ERROR]: Column must be equal to or greater than 1'
+                print('[FATAL ERROR]: Column must be equal to or greater than 1')
                 exit(1)
             # offset so column indexing can start at 0 internally but 1 for the user
             # interface (0th column makes no sense) 
             column = column-1
 
         except ValueError:
-            print '[FATAL ERROR]: Unable to convert ' + str(args.column) + " to an integer"
+            print('[FATAL ERROR]: Unable to convert ' + str(args.column) + " to an integer")
             exit(1)
     else:
         # Note the second column is indexed at position 1, so "column=1" is really the second
         # column (hence why default = 2)
-        column=1
+        column = 1
 
     if args.ignore:
         ignore_string=args.ignore
@@ -161,7 +166,7 @@ if __name__=="__main__":
         with open(filename) as f:
             content = f.readlines()
     except IOError:
-        print '[FATAL ERROR]: File does not exist or could not be opened'
+        print('[FATAL ERROR]: File does not exist or could not be opened')
 
     
     values = []
@@ -174,8 +179,8 @@ if __name__=="__main__":
             try:
                 values.append(safe_convert_to_double(get_columns(line, separator)[column]))
             except IndexError:
-                print "[FATAL ERROR]: Input file lacks column " + str(1+column)
-                print "               File has only " + str(len(get_columns(line, separator))) + " columns"
+                print("[FATAL ERROR]: Input file lacks column " + str(1+column))
+                print("               File has only " + str(len(get_columns(line, separator))) + " columns")
                 exit(1)
 
                 
@@ -186,10 +191,10 @@ if __name__=="__main__":
         for i in values:
             total=total+i
 
-        print "Mean = " + str(total/len(values))
+        print("Mean = " + str(total/len(values)))
     else:
         for i in values:
-            print i
+            print(i)
 
 
         
