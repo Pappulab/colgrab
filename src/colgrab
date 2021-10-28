@@ -166,6 +166,7 @@ if __name__=="__main__":
             content = f.readlines()
     except IOError:
         print('[FATAL ERROR]: File does not exist or could not be opened')
+        exit(1)
 
     
     values = []
